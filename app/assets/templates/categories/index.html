@@ -1,0 +1,88 @@
+<div class="section" style="padding-top: 30px">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-3 cate-accordion">
+        <h3 style="color:lightslategrey;">DANH MUC</h3>
+
+        <uib-accordion close-others="false">
+            <uib-accordion-group heading="{{cate.name}}" ng-repeat="cate in vm.all_cate">
+              <ul class="nav nav-list">
+                <li ng-repeat="cate_nd in cate.category_nds" style="border-bottom: #ccc 1px dotted;" ng-mouseenter="myStyle={paddingLeft:'20px'}", ng-mouseleave="myStyle={paddingLeft:'10px'}">
+                  <a href="#{{cate_nd.link}}" style="color: #F07057; transition: all 0.2s;" ng-style="myStyle" ng-click="vm.SetCate(cate_nd)"><i class="fa fa-circle-o"></i> {{cate_nd.name}}</a>
+                </li>
+              </ul>
+            </uib-accordion-group>
+          </uib-accordion>
+
+        <div ng-show="vm.this_cate_nd.have">
+          <h3 style="color:lightslategrey;">Tim kiem voi</h3>
+          <label> <input type="radio" value="{{vm.this_cate_nd.name}}" ng-model="vm.result.cateSelect">{{vm.this_cate_nd.name}}</label> <br>
+          <label> <input type="radio" value="all" ng-model="vm.result.cateSelect"> Tat ca </label> <br>
+        </div>
+
+        <h3 style="color:lightslategrey;">Gia</h3>
+        <div class="product-info">
+          <label> <input type="radio" value="1" ng-model="vm.result.priceSelect"> Tat ca</label> <br>
+          <label> <input type="radio" value="2" ng-model="vm.result.priceSelect"> 0 VND - 100.000 VND</label> <br>
+          <label> <input type="radio" value="3" ng-model="vm.result.priceSelect"> 100 VND - 200.000 VND </label> <br>
+          <label> <input type="radio" value="4" ng-model="vm.result.priceSelect"> 200 VND -300.000 VND </label> <br>
+         <label> <input type="radio" value="5" ng-model="vm.result.priceSelect"> >300.000 VND </label>
+        </div>
+
+        <a ng-href="#find?category_nd_id={{vm.result.cateSelect}}&price={{vm.result.priceSelect}}&page={{vm.currentPage}}" ng-click='vm.ApplyFilter()'class="btn btn-default">Tim Kiem</a>
+      </div>
+
+      <div class="col-md-9">
+        <!-- {{vm.all_cate}} -->
+        {{vm.toFilter}}
+        <h3>{{vm.this_cate_nd}}</h3>
+        {{vm.result}}
+        <div style="display: block;">
+          <div class="col-md-4" ng-repeat="product in vm.products">
+            <div class="product-box">
+              <figure>
+                <div class="overlay">
+                  <a href="#/products/{{product.ms}}" style="text-decoration: none !important">
+                    <div class="inner" style="height:222px; color:white;">
+                      <span class="text-center" style="padding: 120px 90px; font-size: 20px; display:block;">
+                        <i class="glyphicon glyphicon-plus" ></i><br><strong> Detail</strong>
+                      </span>
+
+                    </div>
+                  </a>
+
+                  <div style="display:inline-flex; width: 100%">
+                    <button class="btn btn-primary" style="border-right-color: white !important; width: 50%; height: 40px; border-radius: 0px;">
+                      MUA NGAY
+                    </button>
+                    <button class="btn btn-primary" style="width: 50%; height: 40px; border-radius: 0px;">
+                      <i class="glyphicon glyphicon-shopping-cart" ></i>
+                      ADD TO CART
+                    </button>
+                  </div>
+
+                </div>
+                <img ng-src="http://localhost:3000{{product.picture.url}}"class="index-product-img">
+              </figure>
+              <div style="padding:10px 20px;">
+                <h4>{{product.name}}</h4>
+                <span style="color:#F07057;" ng-if="!product.sale">{{product.price}} VND</span>
+                <div  ng-if="product.sale">
+                  <span style="color:#F07057;">{{product.sale}} VND</span>
+                  <span class="oldprice">{{product.price}} VND</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="my-paginate text-center" style="display: inline-block; width: 100%" ng-if="vm.totalProducts >12">
+          <uib-pagination total-items="vm.totalProducts" ng-model="vm.currentPage" items-per-page="12" max-size="maxSize" ng-change="vm.PageChanged()" class="pagination-sm text-center" boundary-links="true" rotate="false"></uib-pagination>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

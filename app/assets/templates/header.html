@@ -1,0 +1,34 @@
+     <div class="container">
+        <a href=" " class="navbar-brand my-nav" style="height: 40px;">Home</a>
+        <ul class="nav navbar-nav navbar-right" style="height: 40px;">
+          <li>
+            <a ng-if="vm.current_user" href="gio-hang" class="my-nav" style="font-size: 25px;">
+              <i class="fa fa-shopping-cart"></i></a>
+          </li>
+          <li >
+            <a href="" ng-if="!vm.current_user" ng-click="vm.ToggleModal()" class="my-nav">Login</a>
+          </li>
+          <li class="dropdown" uib-dropdown ng-if="vm.current_user" >
+
+            <a class="dropdown-toggle my-nav" uib-dropdown-toggle data-toggle="dropdown">
+             <img src="http://localhost:3000{{vm.current_user.avatar}}" class="nav-avatar">
+              {{vm.current_user.name}} <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a href="/u/{{vm.current_user.link}}">Profile</a></li>
+              <li><a href="/u/{{vm.current_user.link}}/edit">Edit</a></li>
+              <li class="divider"></li>
+              <li>
+                <a href="#"ng-click="vm.Logout()">Logout</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="container">
+        <ul class="nav navbar-nav" style="padding-left: 30px;">
+          <li ng-class="{ active: vm.isActive(cate.link)}" ng-repeat="cate in vm.all_cate">
+            <a href="{{cate.link}}" class="my-nav2">{{cate.name}}</a>
+          </li>
+        </ul>
+      </div>

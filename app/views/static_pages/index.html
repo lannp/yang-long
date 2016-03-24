@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" style="background-color: rgba(244,245,247,0.9)">
+<head>
+  <meta charset="UTF-8">
+  <base href="/">
+  <title>Document</title>
+<!--   <link rel="stylesheet" type="text/css" href="css/app.css"> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<!--         <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js"></script>
+  <script src="https:///ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
+     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.2.1.js"></script>
+<!--
+  <script src="app/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+  <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+  <script src="//cdn.ckeditor.com/4.5.6/standard/ckeditor.js"></script>
+
+  <script src="bower_components/ment.io/dist/mentio.js"></script>
+
+   <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.2.1.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+   -->
+<!--
+  <script src="app/assets/javascript/js/App.js"></script>
+  <script src="js/controller/LoginCtrl.js"></script>
+  <script src="js/controller/HomeCtrl.js"></script>
+  <script src="js/controller/ProductCtrl.js"></script>
+  <script src="js/controller/CategoryCtrl.js"></script>
+
+  <script src="js/directive/Slide.js"></script>
+  <script src="js/directive/Header.js"></script>
+
+  <script src="js/service/LoginService.js"></script>
+  <script src="js/service/FlashService.js"></script>
+  <script src="js/service/CategoryService.js"></script>
+  <script src="js/service/SpecialCategoryService.js"></script>
+  <script src="js/service/CategoryNdService.js"></script>
+  <script src="js/service/ProductService.js"></script>
+ -->
+</head>
+<body style="font-family: 'Open Sans', Arial, sans-serif; background-color: rgba(244,245,247,0.9);">
+  <header class=" navbar-static-top bs-docs-nav nav-fixed" style="" my-header>
+
+    </header>
+  <span class="header_shadow" style="top: 55px;"></span>
+
+  <div class="view-container index-page">
+    <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message" style="margin-top: 75px;"></div>
+      <div ng-view class="view-frame" style="padding-top:90px;">
+
+    </div>
+    <div ui-view style="padding-top:90px;">
+
+    </div>
+  </div>
+
+    <footer class="section section-primary">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1>Footer header</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, <br>sed eiusmod tempor incidunt ut labore et dolore magna aliqua. <br>Ut enim ad minim veniam, quis nostrud
+            </p>
+          </div>
+          <div class="col-sm-6">
+            <p class="text-info text-right"> <br><br></p>
+            <div class="row">
+              <div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
+                <a href="#">
+                  <i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
+                <a href="#">
+                  <i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
+                <a href="#">
+                  <i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
+                <a href="#">
+                  <i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 hidden-xs text-right">
+                <a href="#" class="footer-social-link">
+                  <i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
+                <a href="#" class="footer-social-link">
+                  <i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
+                <a href="#" class="footer-social-link">
+                  <i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
+                <a href="#" class="footer-social-link">
+                  <i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+</body>
+</html>

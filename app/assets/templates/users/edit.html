@@ -1,0 +1,63 @@
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-7">
+        <h1>Edit</h1>
+        <form namw="EditPage" class="edit-page">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" ng-model="vm.edit_user.name" class="form-control" required><br>
+
+            <label>Email</label>
+            <input type="text" ng-model="vm.edit_user.email" class="form-control" required><br>
+
+            <label>Địa chỉ giao hàng (Số nhà, Đường)</label>
+            <input type="text" ng-model="vm.edit_user.street" class="form-control" ><br>
+            <div class="col-md-6" style="padding-left: 0px;">
+              <label>Tinh/Thanh Pho</label>
+              <select ng-model="vm.edit_user.provincial" class="form-control buy-modal-item" ng-options="provincial.name for provincial in vm.provincials track by provincial.id">
+              </select>
+
+              </select>
+            </div>
+
+            <div class="col-md-6" style="padding-right: 0px;">
+              <label>Quan</label>
+              <select ng-model="vm.edit_user.district" class="form-control buy-modal-item" ng-options="district.name for district in vm.edit_user.provincial.districts track by district.id">
+              </select>
+            </div>
+            <br>
+
+            <label>So dt</label>
+            <input string-to-number ng-model="vm.edit_user.phone" type="number" class="form-control"><br>
+
+            <label>Password</label>
+            <input type="password" ng-model="vm.edit_user.pass" class="form-control" required><br>
+
+            <label>Password confirm</label>
+            <input type="password" ng-model="vm.edit_user.passconfirm" class="form-control" required><br>
+          </div>
+          <button ng-if="!picFile" ng-click="vm.Update()" class="btn btn-primary pull-right">Updatee</button>
+          <button ng-if="picFile" ng-click="vm.UpdateUser(picFile)" class="btn btn-primary pull-right">Update</button>
+          <input type="file" ngf-select ng-model="picFile" name="file"
+                   accept="image/*" ngf-max-size="2MB"
+                   ngf-model-invalid="errorFiles" class="btn btn-prmary">
+            <i ng-show="EditPage.file.$error.required">*required</i><br>
+            <i ng-show="EditPage.file.$error.maxSize">File too large
+                {{errorFiles[0].size / 1000000|number:1}}MB: max 2M</i>
+          <div style="max-width: 300px;">
+            <a ng-click="picFile = null" class="pull-right" style="color: slategray;" ng-show="picFile">x Remove</a> <br>
+            <img ng-show="EditPage.file.$valid" ngf-thumbnail="picFile" class="thumb avatar-in-show">
+          </div>
+            <span class="progress" ng-show="picFile.progress >= 0">
+              <div style="width:{{picFile.progress}}%"
+                  ng-bind="picFile.progress + '%'"></div>
+            </span>
+            <span ng-show="picFile.result">Upload Successful</span>
+            <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>

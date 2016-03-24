@@ -1,0 +1,90 @@
+(function() {
+  // 'use strict';
+
+  angular
+    .module('app')
+    .controller('CartCtrl', CartCtrl);
+
+  CartCtrl.$inject = ["$rootScope", "CartService", "$uibModal", "$location"];
+  function CartCtrl($rootScope, CartService, $uibModal, $location) {
+    vm = this;
+    vm.current_user = $rootScope.globals.currentUser;
+    vm.total_cart = 0;
+    vm.total_price = 0;
+    vm.currentPage = 1;
+    vm.total_product = 0;
+
+    vm.OpenBuyNow = OpenBuyNow;
+    vm.ChangeNumberCart = ChangeNumberCart;
+    vm.PageChanged = PageChanged;
+
+    GetProduct();
+
+    function GetProduct() {
+      console.log($location);
+      var Page = vm.currentPage;
+      if ($location.$$url.indexOf("page")>-1) {
+          Page = $location.$$url.match(/[\?\&]page=(\d+)/)[1]
+        };
+      CartService.GetAll(Page).then(function(data){
+        vm.carts = data.carts;
+        vm.total_cart = data.total_cart;
+        vm.total_price = data.price;
+        vm.total_product = data.total;
+
+        angular.forEach(vm.carts, function(cart){
+          cart.changeNumber = cart.number;       });
+        vm.currentPage = data.page;
+      });
+    }
+
+    function OpenBuyNow () {
+      if ($rootScope.globals.currentUser) {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl:  "<%= asset_path('myModalContent.html') %>",
+          controller: 'ModalInstanceCtrl',
+          // size: 'lg',
+          resolve: {
+            item: {},
+            current_user: function() {
+              return vm.current_user;
+            }
+          }
+        });
+      }
+      else {
+        console.log($rootScope.showModal);
+        $rootScope.showModal = !$rootScope.showModal;
+      }
+    };
+
+    function ChangeNumberCart(cart) {
+      if(cart.changeNumber !=null) {
+        var this_cart = {
+          id: cart.id,
+          number: cart.changeNumber
+        }
+        CartService.UpdateNum(this_cart).then(function(data){
+          vm.total_price = data.cart.total_price;
+          _cart = data.cart;
+          // vm.carts[vm.carts.indexOf(cart)].changeNumber = this_cart.number;
+          vm.carts[vm.carts.indexOf(cart)].number = data.cart.number;
+          vm.carts[vm.carts.indexOf(cart)].changeNumber = data.cart.number;
+          vm.total_product = data.cart.total;
+          console.log(vm.carts[vm.carts.indexOf(cart)]);
+        });
+      }
+    }
+
+    function PageChanged() {
+      CartService.GetAll(vm.currentPage).then(function(data){
+        vm.carts = data.carts;
+        angular.forEach(vm.carts, function(cart){
+          cart.changeNumber = cart.number;       });
+        vm.currentPage = data.page;
+        $location.url('?page='+ vm.currentPage);
+      });
+    }
+  }
+})();

@@ -1,0 +1,212 @@
+(function() {
+
+  angular
+    .module('app')
+    .controller('CategoryShowCtrl', CategoryShowCtrl);
+
+  CategoryShowCtrl.$inject = ["$location","CategoryNdService", "ProductService", "CategoryService","$location",
+    "$stateParams", "$window", "$uibModal", "$rootScope", "CartService", "$state"]
+  function CategoryShowCtrl($location, CategoryNdService, ProductService, CategoryService, $location, $stateParams, $window, $uibModal, $rootScope, CartService, $state) {
+    vm =this;
+    vm.current_user = $rootScope.globals.currentUser;
+    vm.result = {priceSelect: 1, cateSelect: $stateParams.CategoryLink};
+    vm.this_cate_nd = {have: false};
+    vm.currentPage = 1;
+    vm.totalProducts = 0;
+    vm.findAll = true;
+
+    vm.FindInCateNd = FindInCateNd;
+    vm.FindInCate = FindInCate;
+    vm.SetCate = SetCate;
+    vm.PageChanged = PageChanged;
+    vm.PageChange = PageChange;
+    vm.OpenBuyNow = OpenBuyNow;
+    vm.AddCart = AddCart;
+
+    GetAllProduct();
+    GetByLink();
+
+
+    function GetByLink() {
+      if($stateParams.CategoryLink) {
+        CategoryService.GetByLink($stateParams.CategoryLink).then(function(data) {
+          if(data)
+            vm.category = data.category;
+          else
+            $state.go('_404', null, { location: true })
+          // console.log(data);
+        });
+      }
+    }
+
+    function GetAllProduct() {
+      var Page = vm.currentPage;
+      console.log($location);
+      GetByLink();
+      if($location.$$hash && $location.$$hash.indexOf("find")!=0){
+        if ($location.$$hash.indexOf("page")>0) {
+          Page = $location.$$hash.match(/[\?\&]page=(\d+)/)[1]
+        };
+        ProductService.GetInCate($location.$$hash.replace(/[\?\&]page=\d+/i,''), Page).then(function(data) {
+          if( !data || !data.success) {
+            // console.log($stateParams.CategoryLink);
+            $state.go('cate',$stateParams.CategoryLink, null , { location: true });
+            ProductService.GetInCateSt($stateParams.CategoryLink, Page).then(function(data) {
+              if(data){
+                vm.products = data.products;
+                vm.totalProducts = data.total_record;
+                vm.currentPage = data.page;
+              }
+              else
+                $state.go('_404', null, { location: true })
+            });
+          }
+          else {
+            vm.products = data.products;
+            vm.totalProducts = data.total_record;
+            vm.currentPage = data.page;
+            CategoryNdService.GetByLink($location.$$hash).then(function(data) {
+              vm.this_cate_nd = data.category_nd;
+              vm.this_cate_nd.have = true;
+              vm.findAll = false;
+              vm.result.cateSelect = vm.this_cate_nd.link;
+            });
+
+          console.log(data);
+          }
+      });
+      }
+      else if ($location.$$hash && $location.$$hash.indexOf("find") == 0) {
+        link = $location.$$hash.replace(/find/i, '');
+        ProductService.FindByQuerry(link).then(function(data){
+          vm.products = data.products;
+          vm.totalProducts = data.total_record;
+          vm.currentPage = data.page;
+          vm.result.priceSelect = data.price;
+        });
+      }
+      else{
+        if ($location.$$url.indexOf("page")>0) {
+          Page = $location.$$url.match(/[\?\&]page=(\d+)/)[1]
+        };
+        ProductService.GetInCateSt($stateParams.CategoryLink, Page).then(function(data) {
+          if(data){
+            vm.products = data.products;
+            vm.totalProducts = data.total_record;
+            vm.currentPage = data.page;
+          }
+          else
+            $state.go('_404', null, { location: true })
+        });
+      }
+    }
+
+    function SetCate(cate_nd) {
+      ProductService.GetInCate(cate_nd.link, vm.currentPage).then(function(data) {
+        vm.products = data.products;
+        vm.totalProducts = data.total_record;
+        vm.currentPage = data.page;
+        vm.this_cate_nd = cate_nd;
+        vm.this_cate_nd.have = true;
+        vm.findAll = false;
+        vm.result.cateSelect = cate_nd.link;
+        vm.result.priceSelect = 1;
+
+        vm.currentPage = 1;
+      });
+    }
+
+    function FindInCateNd() {
+      ProductService.FindInCateNd(vm.result.cateSelect, vm.result.priceSelect, vm.currentPage).then(function(data) {
+        vm.products = data.products;
+        vm.totalProducts = data.total_record;
+        vm.currentPage = data.page;
+      });
+       vm.currentPage = 1;
+    }
+    function FindInCate() {
+      ProductService.FindInCate(vm.result.cateSelect, vm.result.priceSelect, vm.currentPage).then(function(data) {
+        vm.products = data.products;
+        vm.totalProducts = data.total_record;
+        vm.currentPage = data.page;
+      });
+       vm.currentPage = 1;
+    }
+
+
+    function PageChange( cate_nd) {
+      console.log($location)
+       $location.hash(cate_nd.link+'?page=' +vm.currentPage);
+       ProductService.GetInCate(cate_nd.link, vm.currentPage).then(function(data) {
+        vm.products = data.products;
+        vm.totalProducts = data.total_record;
+        vm.currentPage = data.page;
+        vm.this_cate_nd = cate_nd;
+        vm.this_cate_nd.have = true;
+        vm.findAll = false;
+        vm.result.cateSelect = cate_nd.link;
+      });
+    }
+
+    function PageChanged() {
+      console.log($window.location );
+      $location.url('?page='+ vm.currentPage);
+      if(!$location.$$hash.indexOf("find"))
+        if(vm.findAll) {
+          ProductService.FindInCate(vm.result.cateSelect, vm.result.priceSelect, vm.currentPage).then(function(data) {
+            vm.products = data.products;
+            vm.totalProducts = data.total_record;
+            vm.currentPage = data.page;
+
+          });
+        }
+        else{
+          ProductService.FindInCateNd(vm.result.cateSelect, vm.result.priceSelect, vm.currentPage).then(function(data) {
+            vm.products = data.products;
+            vm.totalProducts = data.total_record;
+            vm.currentPage = data.page;
+          });
+        }
+      else
+        GetAllProduct();
+    }
+
+    function OpenBuyNow (product) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl:  "<%= asset_path('myModalContent.html') %>",
+        controller: 'ModalInstanceCtrl',
+        size: 'lg',
+        resolve: {
+          item: function () {
+            product.this_number =1;
+            return product;
+          },
+          current_user: function() {
+            return vm.current_user;
+          }
+        }
+      });
+    };
+
+    function AddCart(product){
+      if(!vm.current_user){
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl:  "<%= asset_path('login.html') %>",
+          controller: 'LoginCtrl',
+        });
+      }
+      else {
+        var cart = {
+          product_id: product.id,
+          number: 1,
+          user_id: vm.current_user.id
+        };
+        CartService.Create(cart).then(function(data){
+          product.cart.push(data.cart);
+        });
+      }
+    }
+  }
+})();

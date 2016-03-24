@@ -1,0 +1,126 @@
+(function() {
+  'use strict';
+  angular.module("app",['ngRoute', 'ngCookies', 'ngSanitize', 'ngAnimate', 'ui.bootstrap','ui.router', 'ngFileUpload']) //, 'chart.js', 'nvd3ChartDirectives'
+  .config(config)
+  .run(run);
+
+  // .config(function (ChartJsProvider) {
+  //   // Configure all charts
+  //   ChartJsProvider.setOptions({
+  //     colours: ['#97BBCD', '#DCDCDC', '#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
+  //     responsive: true
+  //   });
+  //   // Configure all doughnut charts
+  //   ChartJsProvider.setOptions('Doughnut', {
+  //     animateScale: true
+  //   });
+  // });
+
+  // config.$inject = ['$routeProvider', '$locationProvider'];
+  // function config($routeProvider, $locationProvider){
+  //   $routeProvider
+  //     .when('/', {
+  //       templateUrl: 'views/static-pages/home.html',
+  //       controller: 'HomeCtrl',
+  //       controllerAs: 'vm'
+  //     })
+  //     .when('/products/:ProductLink', {
+  //       templateUrl: 'views/products/show.html',
+  //       controller: 'ProductCtrl',
+  //       controllerAs: 'vm'
+  //     })
+  //     .when('/:CategoryLink',  {
+  //       templateUrl: 'views/categories/show.html',
+  //       controller: 'CategoryCtrl',
+  //       controllerAs: 'vm'
+  //     })
+  //     .otherwise({ redirectTo: '/' });
+  //     $locationProvider.html5Mode(true);
+  // };
+   config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
+  function config($stateProvider, $urlRouterProvider, $locationProvider) {
+
+    $stateProvider
+      .state('home', {
+        url: "/",
+        templateUrl: "<%= asset_path('home.html') %>",
+        controller: 'HomeCtrl',
+        controllerAs: 'vm'
+      })
+      .state('product', {
+        url: '/products/:ProductLink',
+        templateUrl: "<%= asset_path('products/show.html') %>",
+        controller: 'ProductCtrl',
+        controllerAs: 'vm'
+      })
+      // .state('cateindex',{
+      //    url: '/tat-ca-danh-muc',
+      //   templateUrl: "<%= asset_path('categories/index.html') %>",
+      //   controller: 'CategoryCtrl',
+      //   controllerAs: 'vm'
+      // })
+      .state('cart',{
+        url: '/gio-hang',
+        templateUrl: "<%= asset_path('carts/index.html') %>",
+        controller: 'CartCtrl',
+        controllerAs: 'vm',
+        reloadOnSearch: true,
+        resolve: ['$rootScope','$location', function($rootScope, $location){
+          if(!$rootScope.globals.currentUser)
+            $location.path('/_404');
+        }]
+      })
+      .state('_404',{
+        url: '/_404',
+        templateUrl: "<%= asset_path('404.html') %>"
+      })
+      .state('user', {
+        url: '/u/:UserId',
+        templateUrl: "<%= asset_path('users/show.html') %>",
+        controller: 'UserCtrl',
+        controllerAs: 'vm',
+        resolve: ['$rootScope','$location', function($rootScope, $location){
+          if(!$rootScope.globals.currentUser)
+            $location.path('/_404');
+        }]
+      })
+      .state('user_edit', {
+        url: '/u/:UserId/edit',
+        templateUrl:  "<%= asset_path('users/edit.html') %>",
+        controller: 'UserEditCtrl',
+        controllerAs: 'vm'
+      })
+      .state('cate',{
+         url: '/:CategoryLink',
+        templateUrl: "<%= asset_path('categories/show.html') %>",
+        controller: 'CategoryShowCtrl',
+        controllerAs: 'vm'
+      });
+      $urlRouterProvider.otherwise('/_404');
+     $locationProvider.html5Mode(true).hashPrefix('!');
+   }
+
+  run.$inject = ['$rootScope', '$location', '$cookieStore', '$http','$route'];
+  function run($rootScope, $location, $cookieStore, $http, $route) {
+    $rootScope.globals = $cookieStore.get('yang') || {};
+    if ($rootScope.globals.currentUser) {
+      $http.defaults.headers.common['Authorization'] = $rootScope.globals.currentUser.auth_token;
+    }
+  //   $rootScope.$on('$routeChangeSuccess', function(newRoute, oldRoute) {
+  //   if($location.hash()) $anchorScroll();
+  // });
+    // var original = $location.path;
+    // $location.path = function (path, reload) {
+    //     if (reload === false) {
+    //         var lastRoute = $route.current;
+    //         var un = $rootScope.$on('$locationChangeSuccess', function () {
+    //             $route.current = lastRoute;
+    //             un();
+    //         });
+    //     }
+    //     return original.apply($location, [path]);
+    // };
+  }
+
+
+})();

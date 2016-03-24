@@ -1,0 +1,38 @@
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <h1>{{vm.this_user.name}}</h1>
+      <div class="col-md-3">
+        <img class="avatar-in-show" ng-src="{{vm.this_user.avatar}}">
+        <label> Email: {{vm.this_user.email}}</label> <br>
+
+        <label> Tinh/Thanh Pho: {{vm.this_user.provincial.name}}</label><br>
+        <label> Quan: {{vm.this_user.district.name}}</label><br>
+        <label> Dia chi: {{vm.this_user.street}}</label><br>
+        <button class="btn btn-primary">Edit</button>
+        {{vm.this_user.carts}}
+      </div>
+      <div class="col-md-9">
+        <div ng-repeat="cart in vm.carts" class="cart-product">
+          <div style="vertical-align: middle; display: inline-block;">
+            <a href="/products/{{cart.product.ms}}"><img ng-src="http://localhost:3000{{cart.product.picture.url}}"  style="max-height: 150px"></a>
+          </div>
+
+          <div style="vertical-align: middle; padding: 5px 15px; display: inline-block;">
+            <a href="/products/{{cart.product.ms}}"><h4 style="color: darkorange;">{{cart.product.name}}</h4></a>
+            <span style="color:#F07057;" ng-if="!cart.product.sale">{{cart.product.price}} VND</span>
+            <div  ng-if="cart.product.sale">
+              <span style="color:#F07057;">{{cart.product.sale}} VND</span>
+              <span class="oldprice">{{cart.product.price}} VND</span>
+            </div>
+            <h5>So Luong: {{cart.number}}</h5>
+          </div>
+        </div>
+
+        <div class="my-paginate text-center" style="display: inline-block; width: 100%" ng-if="vm.total_cart >2">
+          <uib-pagination total-items="vm.total_cart" ng-model="vm.currentPage" items-per-page="2" max-size="maxSize" ng-change="vm.PageChanged()" class="pagination-sm text-center" boundary-links="true" rotate="false"></uib-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

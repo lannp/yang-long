@@ -1,0 +1,111 @@
+<div class="modal-header" style="background: #F07057; color: white;">
+  <button style="font-size: 30px;" type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">×</button>
+  <h4 class="modal-title">DAT HANG</h4>
+</div>
+<div class="modal-body" style="display:inline-block;">
+  <div ng-if="show_product">
+    <form>
+      <div class="col-md-5" style="padding-left:35px;">
+        <h4> THONG TIN DON HANG</h4>
+
+        <div style="display: table">
+          <div style="display: table-row">
+            <div style="display: table-cell; padding:3px;">
+              SAN PHAM:
+            </div>
+            <div style="display: table-cell; padding:3px;">
+              {{this_product.name}}
+            </div>
+          </div>
+
+          <div style="display: table-row">
+            <div style="display: table-cell; padding:3px; vertical-align: middle;">
+              SO LUONG:
+            </div>
+            <div style="display: table-cell;">
+              <input type="number" ng-model="this_product.this_number" class="form-control" min="1">
+            </div>
+          </div>
+
+          <div style="display: table-row">
+            <div style="display: table-cell; padding:3px; vertical-align: middle;">
+              Size:
+            </div>
+            <div style="display: table-cell;">
+              <select ng-model="this_product.this_size" ng-options="star for star in [1, 2,3,4,5]" class="form-control" required >
+              </select>
+            </div>
+          </div>
+
+          <div style="display: table-row">
+            <div style="display: table-cell; padding:3px;">
+              GIA:
+            </div>
+            <div style="display: table-cell; padding:3px;">
+              {{this_product.price}}
+            </div>
+          </div>
+       </div>
+        <img ng-src="{{this_product.picture}}"class="index-product-img">
+      </div>
+
+      <div class="col-md-7">
+        <h4>DIA CHI NHAN HANG</h4>
+        <div class="col-md-4">
+          <label class="buy-modal-item">Ho ten: </label>
+          <label class="buy-modal-item" style="height: 54px;">Địa chỉ giao hàng (Số nhà, Đường): </label>
+          <label class="buy-modal-item">Tinh/Thanh Pho: </label> <br>
+          <label class="buy-modal-item">Quan/Huyen: </label>
+          <label class="buy-modal-item">So dien thoai: </label>
+        </div>
+
+        <div class="col-md-8">
+          <form action="">
+            <input type="text" ng-model="order.name" class="form-control buy-modal-item" ng-required="true">
+            <textarea ng-model="order.street" class="form-control buy-modal-item" style="resize: none;"></textarea>
+            <select ng-model="order.provincial" class="form-control buy-modal-item" ng-options="provincial.name for provincial in provincials track by provincial.id">
+            </select>
+            <select ng-model="order.district" class="form-control buy-modal-item" ng-options="district.name for district in order.provincial.districts track by district.id">
+            </select>
+            <input  ng-model="order.phone" type="number" min-length="10" max-length="11" class="form-control buy-modal-item" required>
+          </form>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <div ng-if="!show_product">
+    <h4>DIA CHI NHAN HANG</h4>
+    <div class="col-md-4">
+      <label class="buy-modal-item">Ho ten: </label>
+      <label class="buy-modal-item" style="height: 54px;">Địa chỉ giao hàng (Số nhà, Đường): </label>
+      <label class="buy-modal-item">Tinh/Thanh Pho: </label> <br>
+      <label class="buy-modal-item">Quan/Huyen: </label> <br>
+      <label class="buy-modal-item">So dien thoai: </label>
+    </div>
+
+    <div class="col-md-8">
+      <form action="">
+        <input type="text" ng-model="order.name" class="form-control buy-modal-item" ng-required="true">
+        <textarea ng-model="order.street" class="form-control buy-modal-item" style="resize: none;"></textarea>
+         <select ng-model="order.provincial" class="form-control buy-modal-item" ng-options="provincial.name for provincial in provincials track by provincial.id">
+          </select>
+          <select ng-model="order.district" class="form-control buy-modal-item" ng-options="district.name for district in order.provincial.districts track by district.id">
+          </select>
+        <input  ng-model="order.phone" type="number" min-length="10" max-length="11" class="form-control buy-modal-item">
+      </form>
+    </div>
+    <div style="display: table; width: 90%">
+    </div>
+  </div>
+</div>
+<div class="modal-footer" ng-if="show_product">
+  <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-primary" type="button" ng-click="OrderProduct()">DAT HANGG</button>
+</div>
+
+<div class="modal-footer" ng-if="!show_product">
+  <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-primary" type="button" ng-click="ok(is_all=true)">DAT HANG</button>
+</div>

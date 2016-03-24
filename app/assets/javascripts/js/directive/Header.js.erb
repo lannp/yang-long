@@ -1,0 +1,81 @@
+(function() {
+  'use strict';
+
+  angular
+    .module('app')
+    .directive('myHeader', myHeader);
+  function myHeader() {
+    return {
+      templateUrl: "<%= asset_path('header.html') %>",
+      restrict: 'A',
+      transclude: true,
+      // replace:true,
+      scope:true,
+      controller: ["$rootScope","LoginService","FlashService","CategoryService", "$location", "$uibModal", "$state",
+        function($rootScope, LoginService, FlashService,CategoryService, $location, $uibModal, $state) {
+        var vm = this;
+
+        vm.current_user = $rootScope.globals.currentUser;
+         $rootScope.showModal = false;
+
+        vm.ToggleModal = ToggleModal;
+        vm.Login = Login;
+        vm.Logout = Logout;
+        vm.isActive = isActive;
+
+        GetAllCate();
+
+
+        function GetAllCate() {
+          CategoryService.GetAll().then(function(data){
+            vm.all_cate = data.categories;
+            console.log(data);
+          });
+        }
+
+
+        function ToggleModal() {
+          var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl:  "<%= asset_path('login.html') %>",
+            controller: 'LoginCtrl',
+            windowClass: 'login-modal'
+            // size: 'lg',
+            // resolve: {
+            //   item: function () {
+            //     return product;
+            //   },
+            //   current_user: function() {
+            //     return vm.current_user;
+            //   }
+            // }
+          });
+        }
+
+        function Login() {
+          console.log(vm.loginEmail, vm.loginPass)
+          LoginService.Login(vm.loginEmail, vm.loginPass, function(response) {
+            if(response.data){
+              LoginService.SetCurrentUser(response.data.user);
+              window.location.reload();
+            }
+            else
+              FlashService.Error(response.message);
+          })
+        };
+
+        function Logout() {
+          LoginService.Logout();
+          window.location.href ="/";
+        }
+
+        function isActive(viewLocation) {
+          var path ='/'+viewLocation;
+          return path === $location.path();
+          // return true;
+        };
+      }],
+      controllerAs: 'vm'
+    }
+  }
+})();

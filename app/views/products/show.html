@@ -1,0 +1,70 @@
+<div class="section" style="padding-top: 30px">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="wraptocenter" style="height: 555px; background: white">
+          <span></span>
+          <img style="max-width: 555px; max-height: 555px;" ng-src="http://localhost:3000{{vm.product.picture.url}}">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <h2 class="product-title">{{vm.product.name}}</h2>
+        <span class="product-code">Ma San Pham: {{vm.product.ms}}</span><br>
+        <span style="color:#F07057;" ng-if="!vm.product.sale">{{vm.product.price}} VND</span>
+        <div  ng-if="vm.product.sale" >
+          <span style="color:#F07057; font-size: 20px;"><strong>{{vm.product.sale}} VND</strong></span>
+          <span class="oldprice">{{vm.product.price}} VND</span>
+        </div>
+
+        <div class="product-info" style="display: -webkit-box;">
+          <div class="col-md-4 col-sm-4">
+            <div ng-if="vm.product.size.length == 1">
+              <label><h4>Size</h4></label>{{vm.product.size}}
+            </div>
+
+            <label><h4>Size</h4></label>
+            <select ng-model = "vm.size" ng-options="star for star in [1, 2,3,4,5]" class="form-control" required >
+            </select>
+          </div>
+
+          <div class="col-md-4 col-sm-4">
+            <div ng-if="vm.product.material.length == 1">
+              <label>material</label>{{vm.product.material}}
+            </div>
+
+            <label><h4>material</h4></label>
+            <select ng-model = "vm.size" ng-options="star for star in [1, 2,3,4,5]" class="form-control" required >
+            </select>
+          </div>
+
+          <div class="col-md-4 col-sm-4">
+            <div ng-if="vm.product.material.length == 1">
+              <label><h4>material</h4></label>{{vm.product.material}}
+            </div>
+
+            <label><h4>material</h4></label>
+            <select ng-model = "vm.size" ng-options="star for star in [1, 2,3,4,5]" class="form-control" required >
+            </select>
+          </div>
+        </div>
+        <br>
+        <div style="padding-left: 15px; padding-top: 20px;">
+          <input type="text" class="text-center form-control" style="width: 25% !important; display: inline-block !important;">
+          <button class="btn btn-primary" style="border-right-color: white !important; width: 30%; height: 40px;">MUA NGAY</button>
+          hoac
+          <button class="btn btn-primary" style="border-right-color: white !important; height: 40px;">THEM VAO GIO HANG</button>
+        </div>
+        <br>
+        <div class="product-info" style="padding-left: 15px;">
+          <label><h4>Mo ta</h4></label>
+          <p>
+            {{vm.product.description}}
+                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen.
+          </p>
+        </div>
+      </div>
+      <!-- {{vm.product}} -->
+    </div>
+  </div>
+</div>

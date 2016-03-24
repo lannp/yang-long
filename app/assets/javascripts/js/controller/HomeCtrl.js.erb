@@ -1,0 +1,120 @@
+(function() {
+  // 'use strict';
+  angular
+    .module('app')
+    .controller('HomeCtrl', HomeCtrl);
+
+  HomeCtrl.$inject = ["$timeout", "$scope", "CategoryService","CategoryNdService", "$uibModal", "$rootScope", "CartService", "FlashService", "SlideService"];
+  function HomeCtrl($timeout, $scope, CategoryService, CategoryNdService, $uibModal, $rootScope, CartService, FlashService, SlideService) {
+    vm = this;
+    // vm.slides = [{
+    //     picture: 'assets/css/image/img/1.png',
+    //     description: "abcaaaaaaaa",
+    //     id: 0
+    //   },
+    //   {
+    //     picture: 'assets/css/image/img/2.jpg',
+    //     description: "ssssssssssss",
+    //     id: 1
+    //   },
+    //   {
+    //     picture: 'assets/css/image/img/3.png',
+    //     description: "qqqqqqqqqqqqqqq",
+    //     id: 2
+    //   }
+    // ];
+    vm.slides = [];
+    vm.slideIndex = 1;
+
+    vm.myInterval = 3000;
+    vm.noWrapSlides = false;
+    vm.active = 0;
+    vm.current_user = $rootScope.globals.currentUser;
+
+    vm.IsActiveTab = IsActiveTab;
+    vm.OnClickTab = OnClickTab;
+    vm.OpenBuyNow = OpenBuyNow;
+    vm.AddCart = AddCart;
+
+
+    GetAllCate();
+    GetSlide();
+
+    function GetAllCate() {
+      CategoryService.GetAll().then(function(data){
+        vm.all_cate = data.categories;
+        angular.forEach(vm.all_cate, function(cate) {
+          cate.currentTab = 0;
+          if(cate.category_nds.length > 0){
+            CategoryNdService.GetByLink(cate.category_nds[0].link).then(function(data){
+              cate.this_cate_nd = data.category_nd;
+            });
+          }
+          // else {
+          //   CategoryService.GetProduct(cate.link).then(function(data) {
+          //     cate.products = data.products;
+          //   });
+          // }
+
+        })
+        vm.all_cate
+      });
+    }
+
+    function GetSlide() {
+      SlideService.GetAll().then(function(data){
+        console.log(data);
+        vm.slides = data.slides;
+      });
+    }
+
+    function IsActiveTab(cate, index) {
+      return index == cate.currentTab;
+    }
+
+    function OnClickTab(cate, link, index) {
+      cate.currentTab = index;
+      CategoryNdService.GetByLink(link).then(function(data){
+        cate.this_cate_nd = data.category_nd;
+      });
+    }
+
+    function OpenBuyNow (product) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl:  "<%= asset_path('myModalContent.html') %>",
+        controller: 'ModalInstanceCtrl',
+        size: 'lg',
+        resolve: {
+          item: function () {
+            product.this_number =1;
+            return product;
+          },
+          current_user: function() {
+            return vm.current_user;
+          }
+        }
+      });
+    };
+
+    function AddCart(product){
+      if(!vm.current_user){
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl:  "<%= asset_path('login.html') %>",
+          controller: 'LoginCtrl',
+        });
+      }
+      else {
+        var cart = {
+          product_id: product.id,
+          number: 1,
+          user_id: vm.current_user.id
+        };
+        CartService.Create(cart).then(function(data){
+          product.cart.push(data.cart);
+        });
+      }
+    }
+  }
+})();

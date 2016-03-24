@@ -1,0 +1,51 @@
+(function() {
+
+  angular
+    .module('app')
+    .controller('ProductCtrl', ProductCtrl);
+
+  ProductCtrl.$inject = ["$routeParams", "ProductService", "$stateParams", "$uibModal", "$rootScope", "$state"]
+  function ProductCtrl($routeParams, ProductService, $stateParams, $uibModal, $rootScope, $state) {
+    vm =this;
+    vm.product = {};
+    vm.size = 1;
+    vm.current_user = $rootScope.globals.currentUser;
+
+    vm.OpenBuyNow = OpenBuyNow;
+
+    GetProduct();
+
+    function GetProduct() {
+      console.log($stateParams);
+      ProductService.GetByLink($stateParams.ProductLink).then(function(data) {
+         if(data){
+          vm.product = data.product;
+          vm.product.this_size = 1;
+          vm.product.this_number = 1;
+        }
+        else{
+          $state.go('_404', null, { location: true })
+        }
+
+        console.log(data);
+      });
+    }
+
+    function OpenBuyNow (product) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl:  "<%= asset_path('myModalContent.html') %>",
+        controller: 'ModalInstanceCtrl',
+        size: 'lg',
+        resolve: {
+          item: function () {
+            return product;
+          },
+          current_user: function() {
+            return vm.current_user;
+          }
+        }
+      });
+    };
+  }
+})();
