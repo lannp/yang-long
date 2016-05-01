@@ -11,115 +11,158 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160322154855) do
+ActiveRecord::Schema.define(version: 20160501215142) do
+
+  create_table "addresses", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.string   "description", limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "carts", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "product_id"
-    t.integer  "number",     default: 1
-    t.boolean  "is_bought",  default: false
+    t.integer  "user_id",    limit: 4
+    t.string   "product_id", limit: 255
+    t.integer  "number",     limit: 4,   default: 1
+    t.boolean  "is_bought",  limit: 1,   default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name",         limit: 255
+    t.integer  "strong_point", limit: 4
+    t.string   "link",         limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "category_nds", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.integer  "category_id", limit: 4
+    t.string   "link",        limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "category_products", force: :cascade do |t|
+    t.integer  "category_id", limit: 4
+    t.integer  "product_id",  limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.integer  "telephone_id", limit: 4
+    t.integer  "address_id",   limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "contacts", ["address_id"], name: "index_contacts_on_address_id", using: :btree
+  add_index "contacts", ["telephone_id"], name: "index_contacts_on_telephone_id", using: :btree
+
+  create_table "districts", force: :cascade do |t|
+    t.string   "name",          limit: 255
+    t.string   "provincial_id", limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "file_attackts", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "src",        limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "ms",            limit: 4
+    t.string   "name",          limit: 255
+    t.string   "street",        limit: 255
+    t.integer  "provincial_id", limit: 4
+    t.integer  "district_id",   limit: 4
+    t.string   "phone",         limit: 255
+    t.integer  "product_id",    limit: 4
+    t.integer  "number",        limit: 4
+    t.string   "size",          limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string   "ms",             limit: 255
+    t.string   "name",           limit: 255
+    t.string   "description",    limit: 255
+    t.string   "size",           limit: 255
+    t.string   "material",       limit: 255
+    t.string   "picture",        limit: 255
+    t.integer  "price",          limit: 4
+    t.integer  "sale",           limit: 4
+    t.integer  "number",         limit: 4
+    t.integer  "category_nd_id", limit: 4
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "strong_point"
-    t.string   "link"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
-  create_table "category_nds", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "category_id"
-    t.string   "link"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "category_products", force: :cascade do |t|
-    t.integer  "category_id"
-    t.integer  "product_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "districts", force: :cascade do |t|
-    t.string   "name"
-    t.string   "provincial_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "orders", force: :cascade do |t|
-    t.integer  "ms"
-    t.string   "name"
-    t.string   "street"
-    t.integer  "provincial_id"
-    t.integer  "district_id"
-    t.string   "phone"
-    t.integer  "product_id"
-    t.integer  "number"
-    t.string   "size"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "products", force: :cascade do |t|
-    t.string   "ms"
-    t.string   "name"
-    t.string   "description"
-    t.string   "size"
-    t.string   "material"
-    t.string   "picture"
-    t.integer  "price"
-    t.integer  "sale"
-    t.integer  "number"
-    t.integer  "category_nd_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
   create_table "provincials", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "slides", force: :cascade do |t|
-    t.string   "picture"
-    t.string   "description"
-    t.integer  "strong_point"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "picture",      limit: 255
+    t.string   "description",  limit: 255
+    t.integer  "strong_point", limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
+
+  create_table "telephones", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "number",     limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "uis", force: :cascade do |t|
+    t.string   "name",            limit: 255
+    t.integer  "file_attackt_id", limit: 4
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "uis", ["file_attackt_id"], name: "index_uis_on_file_attackt_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.string   "avatar"
-    t.string   "name"
-    t.integer  "sex"
-    t.string   "link"
-    t.string   "street"
-    t.integer  "provincial_id"
-    t.integer  "district_id"
-    t.integer  "phone"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "auth_token"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "avatar",                 limit: 255
+    t.string   "name",                   limit: 255
+    t.integer  "sex",                    limit: 4
+    t.string   "link",                   limit: 255
+    t.string   "street",                 limit: 255
+    t.integer  "provincial_id",          limit: 4
+    t.integer  "district_id",            limit: 4
+    t.integer  "phone",                  limit: 4
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "auth_token",             limit: 255
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "contacts", "addresses"
+  add_foreign_key "contacts", "telephones"
+  add_foreign_key "uis", "file_attackts"
 end
