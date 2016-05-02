@@ -13,7 +13,7 @@ gem "sass-rails"
 gem "uglifier"
 gem "coffee-rails"
 gem "jquery-rails"
-
+gem "mysql2", "~> 0.3.18"
 gem "jbuilder"
 gem "sdoc",         "0.4.0", group: :doc
 gem "figaro"
@@ -34,13 +34,11 @@ gem 'haml-rails'
 gem 'sprockets'
 
 group :development, :test do
-  gem "sqlite3"
-  gem "byebug"
+  gem "pry"
   gem "web-console"
   gem "spring"
 end
 
 group :production do
-  gem "pg", "0.17.1"
   gem "rails_12factor", "0.0.2"
 end
