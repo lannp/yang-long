@@ -96,7 +96,7 @@ h1 {
 .active a {
   color: #2E363F;
   border-bottom: 7px solid #2E363F;
-  background-color: white !important;
+  /*background-color: white !important;*/
 }
 .nav-fixed {
   position: fixed !important;
