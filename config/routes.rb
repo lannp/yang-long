@@ -2,55 +2,11 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
   namespace :admin do
-  get 'orders/index'
-  end
-
-  namespace :admin do
-  get 'orders/show'
-  end
-
-  namespace :admin do
-  get 'orders/edit'
-  end
-
-  namespace :admin do
-  get 'orders/new'
-  end
-
-  namespace :admin do
-  get 'productes/index'
-  end
-
-  namespace :admin do
-  get 'productes/show'
-  end
-
-  namespace :admin do
-  get 'productes/edit'
-  end
-
-  namespace :admin do
-  get 'productes/new'
-  end
-
-  namespace :admin do
-  get 'categories/index'
-  end
-
-  namespace :admin do
-  get 'categories/show'
-  end
-
-  namespace :admin do
-  get 'categories/edit'
-  end
-
-  namespace :admin do
-  get 'categories/new'
-  end
-
-  namespace :admin do
-  get 'ui/index'
+    root "ui#home"
+    resources :ui
+    resources :categories
+    resources :products
+    resources :orders
   end
 
   # get 'static_pages/home'
@@ -58,7 +14,7 @@ Rails.application.routes.draw do
   root 'static_pages#index'
 
   devise_for :users
-
+  resources :categories
   namespace :api, defaults: { format: :json }   do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :users, only: [:index, :show, :create, :update, :destroy] do

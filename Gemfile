@@ -26,12 +26,13 @@ gem 'devise_token_auth'
 gem 'active_model_serializers'
 gem 'ffaker'
 gem "omniauth-google-oauth2"
-# gem 'angular-rails-templates'
-# gem 'bower-rails'
-# gem 'sprockets'
 gem 'angular-rails-templates'
 gem 'haml-rails'
 gem 'sprockets'
+gem "font-awesome-rails"
+gem "turbolinks"
+gem "nprogress-rails"
+gem "jquery-datatables-rails", "~> 3.3.0"
 
 group :development, :test do
   gem "pry"
