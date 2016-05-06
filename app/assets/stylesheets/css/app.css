@@ -285,3 +285,11 @@ h1 {
   border-radius: 50% !important;
   margin-bottom: 40px;
 }
+
+td .btn {
+  width: 80px;
+}
+
+.row-highlight {
+  background-color: yellow;
+}

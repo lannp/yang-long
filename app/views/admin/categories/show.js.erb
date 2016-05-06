@@ -1,0 +1,3 @@
+$("#products").html("<%== j render "admin/products/products", products: @products, category: @category %>")
+$(".fa-chevron-right").hide();
+$(".category-<%= @category.id %> i").show();
