@@ -1,0 +1,14 @@
+<div class="panel-group">
+  <% products.each do |product| %>
+      <%= render "admin/products/product", product: product %>
+  <% end %>
+</div>
+<script type="text/javascript">
+  $('.panel-heading').find('a').on('click', function() {
+    $(".panel-body").hide();
+    var pbody = $(this).parent().parent().find(".panel-body");
+    var icon_chevron = $(this).parent().find("span");
+    icon_chevron.toggleClass("fa-chevron-up fa-chevron-down");
+    if(icon_chevron.hasClass("fa-chevron-up")) pbody.show();
+  });
+</script>

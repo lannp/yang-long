@@ -3576,9 +3576,9 @@ ul.count2 li h3 {
 ul.count2 li span {
   font-weight: 300;
 }
-.divider {
-  /*border-bottom: 1px solid #ddd;
-  margin: 10px;*/
+.title-divider {
+  border-bottom: 1px solid #ddd;
+  margin: 10px 0;
 }
 .divider-dashed {
   border-top: 1px dashed #e7eaec;

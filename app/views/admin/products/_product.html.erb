@@ -1,0 +1,58 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <a>
+      <%= product.name %><span class="pull-right fa fa-chevron-down"
+        style="cursor:pointer"></span>
+    </a>
+  </div>
+  <div class="panel-body" style="display: none; width: 100%;">
+    <table style="width: 100%">
+      <tr>
+        <td style="width: 35%;"><img src="<%= product.picture %>" width="100%"></td>
+        <td style="margin-left: 30px;">
+          <table class="table table-hover">
+            <tr>
+              <th>Code</th>
+              <td><%= product.ms %></td>
+            </tr>
+            <tr>
+              <th>Number</th>
+              <td><%= product.number %></td>
+            </tr>
+            <tr>
+              <th>Description</th>
+              <td><%= product.description %></td>
+            </tr>
+            <tr>
+              <th>Size</th>
+              <td><%= product.size %></td>
+            </tr>
+            <tr>
+              <th>Material</th>
+              <td><%= product.material %></td>
+            </tr>
+            <tr>
+              <th>Price</th>
+              <td><%= product.price %></td>
+            </tr>
+            <tr>
+              <th>Sale</th>
+              <td><%= product.sale %></td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= link_to "Remote", "#", method: :delete, remote: true,
+          class: "btn btn-danger", data: {confirm: "Are you sure"} %>
+        </th>
+        <td>
+        <%= link_to "Edit", "#", remote: true, class: "btn btn-info pull-right" %>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+

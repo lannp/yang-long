@@ -4,6 +4,11 @@ class Admin::CategoriesController < ApplicationController
   end
 
   def show
+    @category = Category.find params[:id]
+    @products = @category.products
+    respond_to do |format|
+      format.js
+    end
   end
 
   def edit
